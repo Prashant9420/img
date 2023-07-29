@@ -13,7 +13,7 @@ function App() {
     setIsUploaded(false);
     const formData=new FormData();
     formData.append("file",file);
-    const resp = await  fetch("http://localhost:5000/upload", {
+    const resp = await  fetch("https://img-backend-4p9u.onrender.com/upload", {
       method: "POST",
       body:formData,
     }); 
@@ -27,7 +27,7 @@ function App() {
     getAllImages();
   }, []);
   const getAllImages=async()=>{
-    const resp=await fetch("http://localhost:5000/getAllImgs")
+    const resp=await fetch("https://img-backend-4p9u.onrender.com/getAllImgs")
     const data=await resp.json();
     setAllImgs(data.files);
   
@@ -51,7 +51,7 @@ function App() {
         </select>
       </div>
       <div>
-        {(selectedImg)?<img src={`http://localhost:5000/uploads/${selectedImg}`}/>:null}
+        {(selectedImg)?<img src={`https://img-backend-4p9u.onrender.com/uploads/${selectedImg}`}/>:null}
       </div>
       <input type="file" name="uploaded_img" onChange={(e)=>{setFile(e.target.files[0]);console.log(e.target.files[0])}}/>
       <button onClick={() => handleClick()}>submit</button>{(!isUploaded)?<CircularProgress />:null}
