@@ -18,7 +18,7 @@ const folderPath = './uploads';
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(cors({
-  origin:'http://localhost:3000',
+  origin:'https://main--merry-bubblegum-970f1c.netlify.app',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization','multipart/form-data']
 }))
