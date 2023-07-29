@@ -1,31 +1,36 @@
 import "./App.css";
 import react, { useState,useEffect} from "react";
-
+import { ToastContainer, toast } from 'react-toastify';
+import CircularProgress from '@mui/material/CircularProgress';
+import 'react-toastify/dist/ReactToastify.css';
 function App() {
   const [file, setFile] = useState();
   const [img,setImg]=useState(null);
   const [allImgs,setAllImgs]=useState([]);
   const [selectedImg,setSelectedImg]=useState();
+  const [isUploaded,setIsUploaded]=useState(true);
   const handleClick =  async () => {
+    setIsUploaded(false);
     const formData=new FormData();
     formData.append("file",file);
-    const resp = await  fetch("https://img-backend-4p9u.onrender.com/upload", {
+    const resp = await  fetch("http://localhost:5000/upload", {
       method: "POST",
       body:formData,
     }); 
     const data = await resp.json();
-  
-    setImg(data.image);
+    setAllImgs((prevImgs) => [...prevImgs, data.image.path.slice(8)]);
+    setIsUploaded(true);
+    toast("Image uploaded !");
 
   };
   useEffect(() => {
     getAllImages();
   }, []);
   const getAllImages=async()=>{
-    const resp=await fetch("https://img-backend-4p9u.onrender.com/getAllImgs")
+    const resp=await fetch("http://localhost:5000/getAllImgs")
     const data=await resp.json();
     setAllImgs(data.files);
-
+  
   }
 
   const handleSelectChange = (event) => {
@@ -46,10 +51,11 @@ function App() {
         </select>
       </div>
       <div>
-        {(selectedImg)?<img src={`https://img-backend-4p9u.onrender.com/uploads/${selectedImg}`}/>:null}
+        {(selectedImg)?<img src={`http://localhost:5000/uploads/${selectedImg}`}/>:null}
       </div>
       <input type="file" name="uploaded_img" onChange={(e)=>{setFile(e.target.files[0]);console.log(e.target.files[0])}}/>
-      <button onClick={() => handleClick()}>submit</button>
+      <button onClick={() => handleClick()}>submit</button>{(!isUploaded)?<CircularProgress />:null}
+      <ToastContainer/>
     </div>
   );
 }
