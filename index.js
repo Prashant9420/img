@@ -4,13 +4,21 @@ const path = require('path');
 const multer = require("multer");
 const app = express();
 const fs = require('fs');
+
+fs.mkdir('uploads', (err) => {
+  if (err) {
+    console.error('Error creating folder:', err);
+  } else {
+    console.log('Folder created successfully.');
+  }
+});
 const folderPath = './uploads';
 
 // app.use(express.static("./public"));
 app.use("/uploads", express.static("uploads"));
 app.use(express.json());
 app.use(cors({
-  origin:'https://main--merry-bubblegum-970f1c.netlify.app',
+  origin:'http://localhost:3000',
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type', 'Authorization','multipart/form-data']
 }))
